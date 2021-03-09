@@ -3,8 +3,6 @@ const server = http.createServer((req, res) => {
     res.writeHead(200, {
         'Content-Type': 'text/html'
     });
-    res.end(`<h2>Hello World</h2>
-<p>${req.url}</p>
-`);
+    res.end(`<h1>${req.url}</h1>`);
 });
 server.listen(3000);

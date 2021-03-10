@@ -3,20 +3,53 @@ const express = require('express');
 const fs = require('fs/promises');
 
 const app = express();
+app.set('view engine', 'ejs');
 
-app.use(express.static(__dirname + '/../public/404.html'));
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
+app.use(express.static('public'));
 
 app.get('/', (req, res) => {
-    res.send(`<h2>Hello</h2>`);
+    res.render('Home', { name: 'Daniel' })
+    // res.send(`<h2>Hello</h2>`);
+});
+
+app.get('/sales', (req, res) => {
+    const sales = require(__dirname + '/../data/sales.json');
+    res.render('sales', { sales })
+    // res.send(`<h2>Hello</h2>`);
+});
+
+app.get('/try-qs', (req, res) => {
+    res.json(req.query);
+});
+
+// const urlencodedParser = express.urlencoded({ extended: false });
+// app.post('/try-post', urlencodedParser, (req, res) => {
+//     res.json(req.body);
+// });
+
+app.post('/try-post', (req, res) => {
+    res.json(req.body);
+});
+
+
+app.get('/try-post-form', (req, res) => {
+    res.render('try-post-form');
+});
+
+app.post('/try-post-form', (req, res) => {
+    res.json(req.body);
 });
 
 app.use(async (req, res) => {
     try {
         data = await fs.readFile(__dirname + '/../public/404.html');
-        console.log(data);
+        // console.log(data);
         res.status(404).send(data.toString());
     } catch (ex) {
-        console.log(ex);
+        // console.log(ex);
         res.status(404).send('<h1>找不到頁面</h1>');
     }
 });

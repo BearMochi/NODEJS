@@ -40,7 +40,8 @@ app.get('/try-post-form', (req, res) => {
 });
 
 app.post('/try-post-form', (req, res) => {
-    res.json(req.body);
+    // res.json(req.body);
+    res.render('try-post-form', req.body);
 });
 
 app.use(async (req, res) => {

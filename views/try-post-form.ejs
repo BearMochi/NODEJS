@@ -3,17 +3,25 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <form method="post" enctype="application/x-www-form-urlencoded">
+                    <form method="post" enctype="application/x-www-form-urlencoded" novalidate>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Email address</label>
                             <input type="email" class="form-control" id="exampleInputEmail1" name="email"
                                 aria-describedby="emailHelp">
-                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
-                                else.</small>
+                            <% if(typeof email !=='undefined' ){ %>
+                                <small class="form-text">
+                                    <%= email %>
+                                </small>
+                                <% } %>
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Password</label>
                             <input type="password" class="form-control" id="exampleInputPassword1" name="password">
+                            <% if(locals.password){ %>
+                                <small class="form-text">
+                                    <%= password %>
+                                </small>
+                                <% } %>
                         </div>
                         <div class="form-group form-check">
                             <input type="checkbox" class="form-check-input" id="exampleCheck1" name="cbox">

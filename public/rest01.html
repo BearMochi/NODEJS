@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+    <form name="form1" novalidate onsubmit="checkForm(); return false;">
+        <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp">
+
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" name="password">
+
+        </div>
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1" name="cbox">
+            <label class="form-check-label" for="exampleCheck1">Check me out</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+    <div id="info">
+
+    </div>
+
+    <script src="/lib/jquery-3.6.0.min.js"></script>
+    <script>
+        function checkForm() {
+            // 檢查欄位資料
+
+            $.post('/try-post', $(document.form1).serialize(), function (data) {
+                console.log(data);
+                $('#info').text(data);
+            }, 'json');
+
+
+        }
+
+
+
+    </script>
+
+
+</body>
+
+</html>

@@ -31,7 +31,9 @@ app.get('/try-qs', (req, res) => {
 // });
 
 app.post('/try-post', (req, res) => {
+    req.body.comeFrom = '/try-post';
     res.json(req.body);
+    // res.end(JSON.stringify(req.body));
 });
 
 

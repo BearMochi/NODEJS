@@ -41,18 +41,31 @@
                 }
             });
 
-            const r = await fetch('/try-post', {
+            // const r = await fetch('/try-post', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify(data),
+            // });
+
+            // const txt = await r.text();
+
+            // $('#info').text(txt);
+
+            fetch('/try-post', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(data),
-            });
-
-            const txt = await r.text();
-
-            $('#info').text(txt);
+            })
+                .then(r => r.text())
+                .then(txt => {
+                    $('#info').text(txt);
+                })
         }
+
 
 
 

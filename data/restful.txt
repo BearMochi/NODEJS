@@ -1,0 +1,14 @@
+
+/product  GET
+
+/product  POST  // 新增一筆
+
+/product/:product_id  GET  // 讀取某一筆
+
+/product/:product_id  PUT  // 修改某一筆
+
+/product/:product_id  DELETE  // 刪除某一筆
+
+
+/product/13/edit POST
+/product/13/delete POST

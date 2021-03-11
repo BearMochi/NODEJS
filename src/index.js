@@ -1,8 +1,12 @@
 require('dotenv').config();
 const express = require('express');
 const fs = require('fs/promises');
+// const multer = require('multer');
+
+const upload = require(__dirname + '/modules/upload-module');
 
 const app = express();
+
 app.set('view engine', 'ejs');
 
 app.use(express.urlencoded({ extended: false }));
@@ -31,11 +35,23 @@ app.get('/try-qs', (req, res) => {
 // });
 
 app.post('/try-post', (req, res) => {
+    req.body.clientMethod = 'post';
     req.body.comeFrom = '/try-post';
     res.json(req.body);
     // res.end(JSON.stringify(req.body));
 });
 
+app.put('/try-post', (req, res) => {
+    req.body.clientMethod = 'put';
+    req.body.comeFrom = '/try-post';
+    res.json(req.body);
+});
+
+app.delete('/try-post', (req, res) => {
+    req.body.clientMethod = 'delete';
+    req.body.comeFrom = '/try-post';
+    res.json(req.body);
+});
 
 app.get('/try-post-form', (req, res) => {
     res.render('try-post-form');
@@ -45,6 +61,11 @@ app.post('/try-post-form', (req, res) => {
     // res.json(req.body);
     res.render('try-post-form', req.body);
 });
+
+app.post('/try-upload', upload.single('avatar'), (req, res) => {
+    req.file.formBody = req.body;
+    res.json(req.file);
+})
 
 app.use(async (req, res) => {
     try {

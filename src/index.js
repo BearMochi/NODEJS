@@ -1,9 +1,13 @@
 require('dotenv').config();
 const express = require('express');
 const fs = require('fs/promises');
-// const multer = require('multer');
+const session = require('express-session');
 
+//const multer = require('multer');
+
+// const upload = multer({ dest: 'tmp_uploads/' })
 const upload = require(__dirname + '/modules/upload-module');
+
 
 const app = express();
 
@@ -11,6 +15,15 @@ app.set('view engine', 'ejs');
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
+app.use(session({
+    saveUninitialized: false,
+    resave: false,
+    secret: 'Taiwangooodgood',
+    cookie: {
+        maxAge: 1200000,
+    }
+}));
 
 app.use(express.static('public'));
 
@@ -66,6 +79,54 @@ app.post('/try-upload', upload.single('avatar'), (req, res) => {
     req.file.formBody = req.body;
     res.json(req.file);
 })
+
+app.post('/try-uploads', upload.array('photo', 10), (req, res) => {
+    // req.files.formBody = req.body;
+    res.json(req.files);
+})
+
+app.get('/my-params1/:action?/:id?', (req, res) => {
+    res.json(req.params);
+});
+
+app.get(/\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res) => {
+    const ori_url = req.url;
+    let u = req.url.slice(3);
+    u = u.split('?')[0];
+    u = u.split('-').join('');
+
+    res.json({ ori_url, u });
+})
+
+app.use('/aaa', require(__dirname + '/routes/admin2'));
+
+app.get('/try-session', (req, res) => {
+    req.session.my_var = req.session.my_var || 0;
+    req.session.my_var++;
+    res.json(req.session);
+});
+
+const admins = {
+    'superadmin': {
+        'pw': '56789',
+        'nickname': '小華'
+    },
+    'david': {
+        'pw': '12345',
+        'nickname': '小明'
+    },
+};
+
+app.get('/login', (req, res) => {
+    res.render('login');
+});
+app.post('/login', (req, res) => {
+    req.body.myTest = 'from server';
+    res.json(req.body);
+});
+app.get('/logout', (req, res) => {
+
+});
 
 app.use(async (req, res) => {
     try {

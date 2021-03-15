@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="fontawesome/css/all.css">
+</head>
+
+<body>
+
+
+    <div class="container">
+        <form action="" name="form2">
+            <input type="text"><br>
+            <input type="hidden" id="imgField">
+            <div id="myimg"></div>
+            <button type="button" class="btn btn-primary" onclick="fileField.click()">選圖</button>
+
+        </form>
+        <form name="form1" style="display: none">
+            <div class="form-group">
+                <!--            <label for="exampleFormControlFile1">Example file input</label>-->
+                <input type="file" class="form-control-file" name="photo" multiple id="exampleFormControlFile1">
+            </div>
+        </form>
+
+
+
+    </div>
+    <script src="lib/jquery-3.6.0.min.js"></script>
+    <script src="bootstrap/js/bootstrap.bundle.js"></script>
+    <script>
+        const fileField = document.querySelector('[type=file]');
+
+        fileField.addEventListener('change', upload);
+
+        function upload() {
+            const fd = new FormData(document.form1);
+
+            fetch('/try-uploads', {
+                method: 'POST',
+                body: fd,
+            })
+                .then(r => r.json())
+                .then(ar => {
+                    console.log(ar);
+                    let str = myimg.innerHTML;
+                    ar.forEach(el => {
+                        str += `<img src="/img-uploads/${el.filename}" width="300px">`
+                    })
+                    myimg.innerHTML = str;
+                })
+        }
+
+
+    </script>
+</body>
+
+</html>

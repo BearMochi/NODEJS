@@ -1,0 +1,46 @@
+<%- include('parts/html-head') %>
+    <%- include('parts/navbar') %>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <form onsubmit="doLogin(); return false;">
+                        <div class="form-group">
+                            <label for="account">account</label>
+                            <input type="text" class="form-control" id="account" name="account">
+                            <small id="emailHelp" class="form-text text-muted"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" name="password">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <%- include('parts/scripts') %>
+            <script>
+                function doLogin() {
+                    const account = $('#account').val();
+                    const password = $('#password').val();
+
+                    fetch('', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ account, password })
+                    })
+                        .then(r => r.json())
+                        .then(obj => {
+
+                        })
+
+
+
+                }
+
+            </script>
+            <%- include('parts/html-foot') %>

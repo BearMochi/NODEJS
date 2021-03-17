@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const fs = require('fs/promises');
 const session = require('express-session');
+const moment = require('moment-timezone');
 
 //const multer = require('multer');
 
@@ -26,6 +27,12 @@ app.use(session({
 }));
 
 app.use(express.static('public'));
+app.use(require('cors')())
+
+app.use((req, res, next) => {
+    res.locals.sess = req.session || {};
+    next();
+})
 
 app.get('/', (req, res) => {
     res.render('Home', { name: 'Daniel' })
@@ -107,8 +114,8 @@ app.get('/try-session', (req, res) => {
 });
 
 const admins = {
-    'superadmin': {
-        'pw': '56789',
+    'pekora': {
+        'pw': 'konpeko',
         'nickname': '小華'
     },
     'david': {
@@ -120,13 +127,47 @@ const admins = {
 app.get('/login', (req, res) => {
     res.render('login');
 });
+
 app.post('/login', (req, res) => {
-    req.body.myTest = 'from server';
-    res.json(req.body);
+    const output = {
+        success: false,
+        error: '',
+        code: 0,
+    };
+    // req.body.myTest = 'from server';
+    if (admins[req.body.account]) {
+        if (admins[req.body.account]['pw'] === req.body.password) {
+            output.success = true;
+            req.session.admin = {
+                account: req.body.account,
+                nickname: admins[req.body.account]['nickname'],
+            };
+        } else {
+            output.error = '帳號或密碼錯誤';
+        }
+    } else {
+        output.error = '帳號或密碼錯誤';
+    }
+    res.json(output);
 });
 app.get('/logout', (req, res) => {
-
+    delete req.session.admin;
+    res.redirect('/login');
 });
+
+
+app.get('/try-moment', (req, res) => {
+    const fm = 'YYYY-MM-DD HH:mm:ss';
+
+    const mo1 = moment(new Date());
+
+    res.json({
+        mo1: mo1.format(fm),
+        mo1a: mo1.tz('Europe/London').format(fm),
+    });
+})
+
+app.use('/address-book', require(__dirname + '/routes/address-book'));
 
 app.use(async (req, res) => {
     try {

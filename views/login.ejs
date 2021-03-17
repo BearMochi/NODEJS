@@ -35,6 +35,11 @@
                     })
                         .then(r => r.json())
                         .then(obj => {
+                            if (obj.success) {
+                                location.href = '/';
+                            } else {
+                                alert(obj.error);
+                            }
 
                         })
 

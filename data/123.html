@@ -1,0 +1,9 @@
+$('.pagelist').pagination({
+className: 'custom-paginationjs',
+dataSource: function (done) {
+$.ajax({
+success: function (data) {
+done(Article); } }) },
+callback: function (data) {
+$(".tbody").html(txt);
+}
